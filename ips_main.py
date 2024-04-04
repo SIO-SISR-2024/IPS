@@ -12,9 +12,13 @@ logging.basicConfig(
 fichier = os.popen('tasklist /FO CSV')
 for ligne in fichier:
     ligne = ligne.split(',')
+    id = ligne[1]
+    ligne = ligne[0].replace('"', '')
+    ligne = ligne.strip()
     with open("blacklist.csv", "r") as blacklist:
         for process in blacklist:
-            if process in ligne[0]:
-                print(ligne[0])
-                logging.info(ligne[1])
+            process = process.strip()
+            if process == ligne:
+                print(f'{ligne} == {process}')
+                logging.info(id)
 fichier.close()
