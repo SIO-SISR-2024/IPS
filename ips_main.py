@@ -2,6 +2,8 @@
 import logging
 import os
 
+readed = False
+
 #Config du logging
 logging.basicConfig(
     level=logging.DEBUG, 
@@ -17,9 +19,16 @@ for ligne in fichier:
     id = ligne[1]
     ligne = ligne[0].replace('"', '')
     ligne = ligne.strip()
+#    with open("readed.csv", "a") as readed_process:
+#        for tasks in readed_process:
+#            if ligne == tasks:
+#                readed = True
+#            else:
+#                readed = False
+#                readed_process.write(ligne + '\n')
     with open("blacklist.csv", "r") as blacklist:
         for process in blacklist:
             process = process.strip()
-            if process == ligne:
+            if process == ligne and not readed:
                 logging.info(f'{ligne}; {id}')
 fichier.close()
