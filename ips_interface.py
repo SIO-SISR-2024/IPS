@@ -18,3 +18,8 @@ Button_OK = tk.Button(fenetre_root, text="OK", command=fenetre_root.destroy)
 Button_TaskKill = tk.Button(fenetre_root, text="Terminer les tâches", command="") # Commande à terminer pour finir les tâches interdites
 
 Affichage = tk.Label(fenetre_root, text=liste_interdictions) # Affichage des interdictions des fichiers logs
+
+Button_OK.pack()
+Button_TaskKill.pack()
+Titre.pack()
+Affichage.pack()
