@@ -7,7 +7,7 @@ Blacklist_PATH = "blacklist.csv" # Chemin vers la blacklist au cas ou nous devon
 
 log_PATH = "interdiction.log" # Chemin vers les fichiers log
 
-liste_interdictions= "" # Variables à remplir la le nom des processus à interdire et rechercher sur internet
+liste_interdictions= []  # Variables à remplir la le nom des processus à interdire et rechercher sur internet
 
 fenetre_root = tk.Tk()
 
@@ -26,7 +26,10 @@ Affichage.pack()
 
 # Package de tout les objets dans notre cas cela est pour l'affichage
 
-with open(log_PATH, "r"):
-    for lignes in liste_interdictions:
+with open(log_PATH, "r") as fichier:
+    for lignes in fichier:
+        liste_interdictions.append(lignes)
+        
+print(liste_interdictions)
         
     
