@@ -3,6 +3,9 @@ import tkinter as tk # Mise en place des bibliothèques pour la gestion des fich
 import requests
 from bs4 import BeautifulSoup # Dans le cas ou nous devons faire des recherches webs
 
+def button_kill():
+    for pid in log_FILENAME:
+        os.kill(pid)
 
 Blacklist_PATH = "blacklist.csv" # Chemin vers la blacklist au cas ou nous devons verifier
 
