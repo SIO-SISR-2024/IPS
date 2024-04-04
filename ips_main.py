@@ -2,6 +2,7 @@
 import logging
 import os
 
+#Config du logging
 logging.basicConfig(
     level=logging.DEBUG, 
     filename='interdiction.log', 
@@ -9,6 +10,7 @@ logging.basicConfig(
     format='%(message)s'  
 )
 
+#Récupère un CSV des tasks dans Windows
 fichier = os.popen('tasklist /FO CSV')
 for ligne in fichier:
     ligne = ligne.split(',')
@@ -19,6 +21,5 @@ for ligne in fichier:
         for process in blacklist:
             process = process.strip()
             if process == ligne:
-                print(f'{ligne} == {process}')
-                logging.info(ligne)
+                logging.info(f'{ligne}; {id}')
 fichier.close()
