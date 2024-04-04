@@ -1,0 +1,1 @@
+print("Pour le main mettre dans un fichier interdiction.log !!!!!!!!!!!!")
