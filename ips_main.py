@@ -13,6 +13,6 @@ fichier = os.popen('tasklist /FO CSV')
 for ligne in fichier:
     with open("blacklist.csv", "r") as blacklist:
         for process in blacklist:
-            if process == ligne:
-                logging.info(ligne)
+            if process == ligne[0]:
+                logging.info(ligne[1])
 fichier.close()
