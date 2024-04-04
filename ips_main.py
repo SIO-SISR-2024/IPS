@@ -29,6 +29,6 @@ for ligne in fichier:
     with open("blacklist.csv", "r") as blacklist:
         for process in blacklist:
             process = process.strip()
-            if process == ligne and not readed:
+            if process == ligne:
                 logging.info(f'{ligne}; {id}')
 fichier.close()
