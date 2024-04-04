@@ -23,3 +23,10 @@ Button_OK.pack()
 Button_TaskKill.pack()
 Titre.pack()
 Affichage.pack()
+
+# Package de tout les objets dans notre cas cela est pour l'affichage
+
+with open(log_PATH, "r"):
+    for lignes in liste_interdictions:
+        
+    
