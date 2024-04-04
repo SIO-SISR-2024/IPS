@@ -20,5 +20,5 @@ for ligne in fichier:
             process = process.strip()
             if process == ligne:
                 print(f'{ligne} == {process}')
-                logging.info(id)
+                logging.info(ligne)
 fichier.close()
