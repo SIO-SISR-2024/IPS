@@ -2,8 +2,6 @@
 import logging
 import os
 
-readed = False
-
 #Config du logging
 logging.basicConfig(
     level=logging.DEBUG, 
@@ -21,9 +19,10 @@ for ligne in fichier:
     ligne = ligne[0].replace('"', '')
     ligne = ligne.strip()
     #Vérifie les tasks déjà analysés
+    readed = False
     with open("readed.csv", "r") as readed_process:
         for tasks in readed_process:
-            if ligne != tasks.strip():
+            if ligne != tasks.strip() and not readed:
                 readed = False
             else:
                 readed = True
