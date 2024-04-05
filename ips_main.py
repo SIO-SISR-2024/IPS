@@ -15,7 +15,7 @@ fichier = os.popen('tasklist /FO CSV')
 for ligne in fichier:
     #Mise en forme
     ligne = ligne.split(',')
-    id = ligne[1]
+#    id = ligne[1]
     ligne = ligne[0].replace('"', '')
     ligne = ligne.strip()
     #Vérifie les tasks déjà analysés
@@ -35,5 +35,5 @@ for ligne in fichier:
                     for process in blacklist:
                         process = process.strip()
                         if process == ligne:
-                            logging.info(f'{ligne}; {id}')
+                            logging.info(f'{ligne}')
 fichier.close()
