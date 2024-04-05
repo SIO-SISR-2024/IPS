@@ -15,20 +15,26 @@ logging.basicConfig(
 #Récupère un CSV des tasks dans Windows
 fichier = os.popen('tasklist /FO CSV')
 for ligne in fichier:
+    #Mise en forme
     ligne = ligne.split(',')
     id = ligne[1]
     ligne = ligne[0].replace('"', '')
     ligne = ligne.strip()
-#    with open("readed.csv", "a") as readed_process:
-#        for tasks in readed_process:
-#            if ligne == tasks:
-#                readed = True
-#            else:
-#                readed = False
-#                readed_process.write(ligne + '\n')
-    with open("blacklist.csv", "r") as blacklist:
-        for process in blacklist:
-            process = process.strip()
-            if process == ligne:
-                logging.info(f'{ligne}; {id}')
+    #Vérifie les tasks déjà analysés
+    with open("readed.csv", "r") as readed_process:
+        for tasks in readed_process:
+            if ligne != tasks.strip():
+                readed = False
+            else:
+                readed = True
+        if not readed:
+            #Ecrit les tasks analysé
+            with open("readed.csv", "a") as write_process:
+                write_process.write(ligne + '\n')
+                #Analyse les tasks en blacklist
+                with open("blacklist.csv", "r") as blacklist:
+                    for process in blacklist:
+                        process = process.strip()
+                        if process == ligne:
+                            logging.info(f'{ligne}; {id}')
 fichier.close()
