@@ -1,54 +1,51 @@
 import os
-import tkinter as tk # Mise en place des bibliothèques pour la gestion des fichiers
-import requests # Dans le cas ou nous devons faire des recherches webs
-from bs4 import BeautifulSoup # Dans le cas ou nous devons faire des recherches webs
+import tkinter as tk
+import requests
+from bs4 import BeautifulSoup
 
+# Fonction pour touts les processus
 def button_kill_all():
-    for id_processus_1 in log_FILENAME:
-            kill = (f"taskkill /IM {ligne} /F")
-            os.system(kill)
-    
-# def button_kill_spe(process_name):
-#  for id_processus_2 in log_FILENAME:
-#         if titre_processus.lower() in id_processus_2.lower():
-#             os.popen()
+    for process in processes:
+        kill_command = f"taskkill /IM {process} /F"
+        os.system(kill_command)
 
-Blacklist_PATH = "blacklist.csv" # Chemin vers la blacklist au cas ou nous devons verifier
+# Fonction pour kill chaque processus
+def button_kill_spe(process_name):
+    for process in processes:
+        if process_name.lower() in process.lower():
+            os.popen(f"taskkill /IM {process} /F")
 
-log_FILENAME = "interdiction.log"
-log_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), log_FILENAME) # Construction du chemin pour l'ouverture du fichier sur tout les postes
+# Touts les chemins vers les fichiers
+blacklist_path = "blacklist.csv"
+log_filename = "interdiction.log"
+log_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), log_filename)
 
-liste_interdictions= []  # Variables à remplir la le nom des processus à interdire et rechercher sur internet
+# Affichage de touts les programmes dans le label de la fenetre
+processes = []
+with open(log_path, "r") as file:
+    for line in file:
+        processes.append(line.strip().replace('"', ""))
 
-fenetre_root = tk.Tk()
+# Creation de la fenetre
+root = tk.Tk()
 
-Titre = tk.Label(fenetre_root, text="Interdictions trouvés:")
+# Tout les bouttons et label de la fenetre
+title_label = tk.Label(root, text="Interdictions trouvés:")
+title_label.pack()
 
-Button_OK = tk.Button(fenetre_root, text="OK", command=fenetre_root.destroy)
+ok_button = tk.Button(root, text="OK", command=root.destroy)
+ok_button.pack()
 
-Button_TaskKill = tk.Button(fenetre_root, text="Terminer les tâches", command=button_kill_all) # Commande à terminer pour finir les tâches interdites
+taskkill_button = tk.Button(root, text="Terminer les tâches", command=button_kill_all)
+taskkill_button.pack()
 
-# for titre_processus in liste_interdictions:
-#     Button_Kill_Process = tk.Button(fenetre_root, text=f"Kill {titre_processus}", command=button_kill_spe(titre_processus))
-#     Button_Kill_Process.pack()
-    
+processes_label = tk.Label(root, text="\n".join(processes))
+processes_label.pack()
 
-Affichage = tk.Label(fenetre_root, text=liste_interdictions) # Affichage des interdictions des fichiers logs
+# Boutton de kill pour chaque processus
+for process in processes:
+    kill_button = tk.Button(root, text=f"Kill {process}", command=lambda p=process: button_kill_spe(p))
+    kill_button.pack()
 
-Button_OK.pack()
-Button_TaskKill.pack()
-Titre.pack()
-Affichage.pack()
-
-# Package de tout les objets dans notre cas cela est pour l'affichage
-
-with open(log_PATH, "r") as fichier:
-    for ligne in fichier:
-        liste_interdictions.append(ligne.strip().replace("""\"""",""))
-        ligne = ligne.replace("""\n""","")
-
-liste_interdictions_str = "\n".join(liste_interdictions) # Conversion de la liste en une chaîne pour l'affichage
-Affichage.config(text=liste_interdictions_str)
-
-
-fenetre_root.mainloop()
+# Mise en marche de la fenetre
+root.mainloop()
