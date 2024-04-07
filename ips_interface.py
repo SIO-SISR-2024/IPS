@@ -1,16 +1,17 @@
 import os
 import tkinter as tk # Mise en place des bibliothèques pour la gestion des fichiers
-import requests
+import requests # Dans le cas ou nous devons faire des recherches webs
 from bs4 import BeautifulSoup # Dans le cas ou nous devons faire des recherches webs
 
 def button_kill_all():
     for id_processus_1 in log_FILENAME:
-            os.kill(id_processus_1)
+            kill = (f"taskkill /IM {ligne} /F")
+            os.system(kill)
     
-def button_kill_spe(process_name):
- for id_processus_2 in log_FILENAME:
-        if titre_processus.lower() in id_processus_2.lower():
-            os.kill()
+# def button_kill_spe(process_name):
+#  for id_processus_2 in log_FILENAME:
+#         if titre_processus.lower() in id_processus_2.lower():
+#             os.popen()
 
 Blacklist_PATH = "blacklist.csv" # Chemin vers la blacklist au cas ou nous devons verifier
 
@@ -27,9 +28,9 @@ Button_OK = tk.Button(fenetre_root, text="OK", command=fenetre_root.destroy)
 
 Button_TaskKill = tk.Button(fenetre_root, text="Terminer les tâches", command=button_kill_all) # Commande à terminer pour finir les tâches interdites
 
-for titre_processus in liste_interdictions:
-    Button_Kill_Process = tk.Button(fenetre_root, text=f"Kill {titre_processus}", command=button_kill_spe(titre_processus))
-    Button_Kill_Process.pack()
+# for titre_processus in liste_interdictions:
+#     Button_Kill_Process = tk.Button(fenetre_root, text=f"Kill {titre_processus}", command=button_kill_spe(titre_processus))
+#     Button_Kill_Process.pack()
     
 
 Affichage = tk.Label(fenetre_root, text=liste_interdictions) # Affichage des interdictions des fichiers logs
@@ -44,6 +45,7 @@ Affichage.pack()
 with open(log_PATH, "r") as fichier:
     for ligne in fichier:
         liste_interdictions.append(ligne.strip().replace("""\"""",""))
+        ligne = ligne.replace("""\n""","")
 
 liste_interdictions_str = "\n".join(liste_interdictions) # Conversion de la liste en une chaîne pour l'affichage
 Affichage.config(text=liste_interdictions_str)
