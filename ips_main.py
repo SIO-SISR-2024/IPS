@@ -1,4 +1,4 @@
-#Pour le main mettre dans un fichier interdiction.log
+#Appel des librairies
 import logging
 import os
 import socket
@@ -40,4 +40,5 @@ for ligne in fichier:
                         process = process.strip()
                         if process == ligne:
                             logging.info(f'{hostname} - {ip_address} - {ligne}')
+                            exec("ips_interface.py")
 fichier.close()
