@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 import requests
 from bs4 import BeautifulSoup
+from tkinter.messagebox import * # Cette bibliotheque est la pour pouvoir afficher des information en texte box
 
 # Fonction pour touts les processus
 def button_kill_all():
