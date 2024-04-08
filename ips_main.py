@@ -1,6 +1,11 @@
 #Pour le main mettre dans un fichier interdiction.log
 import logging
 import os
+import socket
+
+#Déclaration de variables
+hostname   = socket.gethostname()
+ip_address = socket.gethostbyname(socket.gethostname())
 
 #Config du logging
 logging.basicConfig(
@@ -34,5 +39,5 @@ for ligne in fichier:
                     for process in blacklist:
                         process = process.strip()
                         if process == ligne:
-                            logging.info(f'{ligne}')
+                            logging.info(f'{hostname} - {ip_address} - {ligne}')
 fichier.close()
