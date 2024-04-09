@@ -40,7 +40,8 @@ def creation_arret_button(processus):
 # Mise en place des chemins des fichiers
 blacklist_path = "blacklist.csv"
 log_filename = "interdiction.log"
-log_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), log_filename)
+log_path = log_filename
+# os.path.join(os.path.dirname(os.path.realpath(__file__)), log_filename) = solution de secour si il y a un probleme avec le repertoire
 
 programmes = []
 
