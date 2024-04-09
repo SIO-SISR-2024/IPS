@@ -5,7 +5,7 @@ import socket
 
 #Déclaration de variables
 hostname   = socket.gethostname()
-ip_address = socket.gethostbyname(socket.gethostname())
+ip_address = socket.gethostbyname(hostname)
 
 #Config du logging
 logging.basicConfig(
