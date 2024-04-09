@@ -9,32 +9,32 @@ from tkinter.messagebox import *
 def button_kill_all():
     for processus in programmes:
         try:
-            kill_command = f"taskkill /IM {processus} /F" # Commande pour tuer un processus
+            kill_command = f"taskkill /IM {processus[2]} /F" # Commande pour tuer un processus
             os.system(kill_command) # Exécution de la commande
         except Exception as e:
-            print(f"Erreur lors de l'arrêt du processus {processus}: {e}")
+            print(f"Erreur lors de l'arrêt du processus {processus[2]}: {e}")
 
 # Mise en place de la fonction pour tuer un processus spécifique
 def button_kill_spe(processus_name):
     for processus in programmes:
-        if processus_name.lower() in processus.lower():
+        if processus_name.lower() in str(processus).lower():
             try:
-                os.popen(f"taskkill /IM {processus} /F") # Exécution de la commande pour tuer un processus spécifique
+                os.popen(f"taskkill /IM {processus[2]} /F") # Exécution de la commande pour tuer un processus spécifique
             except Exception as e:
-                print(f"Erreur lors de l'arrêt du processus {processus}: {e}")
+                print(f"Erreur lors de l'arrêt du processus {processus[2]}: {e}")
 
 # Mise en place de la fonction pour afficher une boîte de dialogue de confirmation
 def appelle():
     if askyesno('Titre 1', 'Êtes-vous sûr de vouloir faire ça?'):
         button_kill_all()
     else:
-        root.destroy
+        root.destroy()
 
 # Mise en place de la fonction pour créer un bouton pour tuer un processus spécifique
 def creation_arret_button(processus):
     def kill_processus_appelle():
-        button_kill_spe(processus)
-    kill_boutton = tk.Button(root, text=f"Arret {processus}", command=kill_processus_appelle)
+        button_kill_spe(processus[2]) # Pass the process name as an argument to the function
+    kill_boutton = tk.Button(root, text=f"Arret {processus[2]}", command=kill_processus_appelle)
     kill_boutton.pack()
 
 # Mise en place des chemins des fichiers
@@ -48,8 +48,9 @@ programmes = []
 # Ouerture du fichier log pour récupérer la liste des processus interdits
 try:
     with open(log_path, "r") as file:
-        for line in file:
-            programmes.append(line.strip().replace('"', ""))
+        for ligne in file:
+            host, ip, programme = ligne.strip().split('|')
+            programmes.append((host, ip, programme.replace('"', "")))
 except FileNotFoundError:
     print("Fichier log non trouvé")
 except Exception as e:
@@ -70,11 +71,11 @@ taskkill_button = tk.Button(root, text="Terminer les tâches", command=appelle)
 taskkill_button.pack()
 
 # Ajout d'un label pour afficher la liste des processus interdits
-processus_label = tk.Label(root, text="\n".join(programmes))
+processus_label = tk.Label(root, text="\n".join([f"{host} | {ip} | {programme}" for host, ip, programme in programmes]))
 processus_label.pack()
 
 # Création d'un bouton pour tuer chaque processus interdit
-for processus in programmes:
-    creation_arret_button(processus)
+for host, ip, programme in programmes:
+    creation_arret_button((host, ip, programme))
 
 root.mainloop()
