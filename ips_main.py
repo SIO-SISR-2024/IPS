@@ -40,5 +40,5 @@ for ligne in fichier:
                         process = process.strip()
                         if process == ligne:
                             logging.info(f'{hostname} - {ip_address} - {ligne}')
-                            exec('ips_interface.py')
+                            os.system("python ips_interface.py")
 fichier.close()
