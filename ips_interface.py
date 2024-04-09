@@ -45,7 +45,7 @@ log_path = log_filename
 
 programmes = []
 
-# Ouerture du fichier log pour récupérer la liste des processus interdits
+# Ouverture du fichier log pour récupérer la liste des processus interdits
 try:
     with open(log_path, "r") as file:
         for ligne in file:
