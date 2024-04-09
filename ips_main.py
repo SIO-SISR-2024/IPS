@@ -39,6 +39,6 @@ for ligne in fichier:
                     for process in blacklist:
                         process = process.strip()
                         if process == ligne:
-                            logging.info(f'{hostname} - {ip_address} - {ligne}')
+                            logging.info(f'{hostname}|{ip_address}|{ligne}')
                             os.system("python ips_interface.py")
 fichier.close()
