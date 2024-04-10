@@ -6,6 +6,7 @@ import socket
 #Déclaration de variables
 hostname   = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
+is_blacklisted = False
 
 #Config du logging
 logging.basicConfig(
@@ -26,10 +27,15 @@ for ligne in fichier:
     readed = False
     with open("readed.csv", "r") as readed_process:
         for tasks in readed_process:
-            if ligne != tasks.strip() and not readed:
-                readed = False
-            else:
-                readed = True
+            with open("blacklist.csv", "r") as blacklist:
+                    for process in blacklist:
+                        if ligne not in process:
+                            if ligne != tasks.strip() and not readed:
+                                readed = False
+                            else:
+                                readed = True
+                        else:
+                            readed = True
         if not readed:
             #Ecrit les tasks analysé
             with open("readed.csv", "a") as write_process:
@@ -40,5 +46,7 @@ for ligne in fichier:
                         process = process.strip()
                         if process == ligne:
                             logging.info(f'{hostname}|{ip_address}|{ligne}')
-                            os.system("python ips_interface.py")
+                            is_blacklisted = True
+if is_blacklisted:
+    os.system("python ips_interface.py")
 fichier.close()
