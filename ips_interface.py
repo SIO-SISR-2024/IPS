@@ -36,11 +36,6 @@ def creation_arret_button(processus):
         button_kill_spe(processus[2]) # Pass the process name as an argument to the function
     kill_boutton = tk.Button(root, text=f"Arret {processus[2]}", command=kill_processus_appelle)
     kill_boutton.pack()
-    
-def fin_programme_ok():
-    with open(log_path, 'w'):
-        print('vidage du fichier interdiction.log')
-    root.destroy
 
 # Mise en place des chemins des fichiers
 blacklist_path = "blacklist.csv"
@@ -68,7 +63,7 @@ titre_label = tk.Label(root, text="Interdictions trouvées :")
 titre_label.pack()
 
 # Ajout d'un bouton pour fermer la fenêtre
-ok_button = tk.Button(root, text="OK", command=fin_programme_ok())
+ok_button = tk.Button(root, text="OK", command=root.destroy)
 ok_button.pack()
 
 # Ajout d'un bouton pour arreter tous les processus interdits
