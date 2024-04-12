@@ -6,8 +6,6 @@ import socket
 #Déclaration de variables
 hostname   = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
-is_blacklisted = False
-in_blacklist   = False
 
 #Config du logging
 logging.basicConfig(
@@ -17,37 +15,62 @@ logging.basicConfig(
     format='%(message)s'  
 )
 
+def check_readed():
+    if not os.path.isfile('readed.csv'):
+        with open('readed.csv', 'w') as readed_csv:
+            readed_csv.write('Readed \n')
+
+def is_safe(process, safe_process):
+    if process == safe_process:
+        return True
+    else:
+        return False
+
+def is_blacklist(process, blacklisted_process):
+    if process == blacklisted_process.strip():
+        logging.info(f'{hostname}|{ip_address}|{process}')
+        return True
+    else:
+        return False
+
+def write_readed(process):
+    with open("readed.csv", "a") as write_process:
+        write_process.write(process + '\n')
+
+def processing(process, blacklist, readed_file):
+    is_blacklisted = False
+    start_interface= False
+    safe = False
+    for safe_process in readed_file:
+        if not safe:
+            safe_process = safe_process.strip()
+            safe = is_safe(process, safe_process)
+    if not safe:   
+        for blacklisted_process in blacklist:
+            is_blacklisted = is_blacklist(process, blacklisted_process)
+            if is_blacklisted:
+                start_interface = True
+        if not start_interface:
+            write_readed(process)
+    return start_interface
+
+
 #Récupère un CSV des tasks dans Windows
 fichier = os.popen('tasklist /FO CSV')
+check_readed()
+stop_nb = 0
+is_stop = False
 for ligne in fichier:
     #Mise en forme
     ligne = ligne.split(',')
     ligne = ligne[0].replace('"', '')
     ligne = ligne.strip()
-    #Vérifie les tasks déjà analysés
-    readed = False
-    with open("readed.csv", "r") as readed_process:
-        for tasks in readed_process:
-            with open("blacklist.csv", "r") as blacklist:
-                    for process in blacklist:
-                        if ligne != tasks.strip() and not readed:
-                            readed = False
-                            if ligne == process:
-                                in_blacklist = True
-                        else:
-                            readed = True
-        if not readed:
-            #Ecrit les tasks analysé
-            with open("readed.csv", "a") as write_process:
-                if not in_blacklist:
-                    write_process.write(ligne + '\n')
-                #Analyse les tasks en blacklist
-                with open("blacklist.csv", "r") as blacklist:
-                    for process in blacklist:
-                        process = process.strip()
-                        if process == ligne:
-                            logging.info(f'{hostname}|{ip_address}|{ligne}')
-                            is_blacklisted = True
-if is_blacklisted:
+    blacklist   = open('blacklist.csv', 'r')
+    readed_file = open('readed.csv', 'r')  
+    #Vérifie les tasks déjà analysés     
+    is_stop = processing(ligne, blacklist, readed_file)
+    if is_stop:
+        stop_nb = stop_nb + 1
+if stop_nb > 0:
     os.system("python ips_interface.py")
 fichier.close()
