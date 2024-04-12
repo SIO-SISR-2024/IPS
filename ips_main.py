@@ -15,17 +15,20 @@ logging.basicConfig(
     format='%(message)s'  
 )
 
+#Vérification existance de readed
 def check_readed():
     if not os.path.isfile('readed.csv'):
         with open('readed.csv', 'w') as readed_csv:
             readed_csv.write('Readed \n')
 
+#Vérification des tâches safe
 def is_safe(process, safe_process):
     if process == safe_process:
         return True
     else:
         return False
 
+#Blacklistage des tâches
 def is_blacklist(process, blacklisted_process):
     if process == blacklisted_process.strip():
         logging.info(f'{hostname}|{ip_address}|{process}')
@@ -33,10 +36,12 @@ def is_blacklist(process, blacklisted_process):
     else:
         return False
 
+#Ecriture dans readed.csv
 def write_readed(process):
     with open("readed.csv", "a") as write_process:
         write_process.write(process + '\n')
 
+#Traitement des tâches
 def processing(process, blacklist, readed_file):
     is_blacklisted = False
     start_interface= False
